@@ -28,6 +28,7 @@ int main()
 */
 void initGrid( Grid grid )
 {
+    // Assign sets of one value to the square s that the puzzle start with
     grid[ 0 ][ 0 ] = std::set<int>{ 5 };
     return;
 }
@@ -36,8 +37,36 @@ void initGrid( Grid grid )
 * iterates all of the grid squares and removes any options that are not allowed in sudoku
 * returns true if the grid as become impossible
 */
-bool concreteGrid( Grid grid )
+bool concreteGrid( Grid &grid )
 {
+    for( int x = 0; x < size; x++ )
+    {
+        for( int y = 0; y < size; y++ )
+            //remove impossibilities
+            if( grid[ x ][ y ].size == 1 )
+            {
+                //This one has been decided, update the ones that it affects
+                //row
+                for( int i = 0; i < size; i++ )
+                {
+                    if( i == x ) { continue; } // don't updated the square that we are looking at
+
+                    grid[ i ][ y ].erase( grid[ x ][ y ].begin() );
+
+                    if( grid[ i ][ y ].size == 0 ) { return false; }
+                }
+
+                //column
+                for( int i = 0; i < size; i++ )
+                {
+                    if( i == y ) { continue; } // don't updated the square that we are looking at
+
+                    grid[ x ][ i ].erase( grid[ x ][ y ].begin() );
+
+                    if( grid[ x ][ i ].size == 0 ) { return false; }
+                }
+            }
+    }
     return false;
 }
 
