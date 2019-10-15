@@ -9,7 +9,7 @@
 
 //2d array of sets
 typedef std::vector< std::vector< std::set<int> > > Grid;
-const int size = 9;
+const int gridSize = 9;
 const int subsize = 3;
 
 void initGrid( Grid &grid );
@@ -18,11 +18,11 @@ void printGrid( const Grid &grid );
 
 int main()
 {
-    Grid grid( size );
+    Grid grid( gridSize );
 
-    for( int i = 0; i < size; i++ )
+    for( int i = 0; i < gridSize; i++ )
     {
-        grid[ i ] = std::vector<std::set<int> >( size, std::set<int> { 1, 2, 3, 4, 5, 6, 7, 8, 9 } );
+        grid[ i ] = std::vector<std::set<int> >( gridSize, std::set<int> { 1, 2, 3, 4, 5, 6, 7, 8, 9 } );
     }
 
     initGrid( grid );
@@ -77,16 +77,16 @@ void initGrid( Grid &grid )
 */
 bool concreteGrid( Grid &grid )
 {
-    for( int x = 0; x < size; x++ )
+    for( int x = 0; x < gridSize; x++ )
     {
-        for( int y = 0; y < size; y++ )
+        for( int y = 0; y < gridSize; y++ )
         {
             //remove impossibilities from the other squares
             if( grid[ x ][ y ].size() == 1 )
             {
                 //This one has been decided, update the ones that it affects
                 //row
-                for( int i = 0; i < size; i++ )
+                for( int i = 0; i < gridSize; i++ )
                 {
                     if( i == x ) { continue; } // don't updated the square that we are looking at
 
@@ -96,7 +96,7 @@ bool concreteGrid( Grid &grid )
                 }
 
                 //column
-                for( int i = 0; i < size; i++ )
+                for( int i = 0; i < gridSize; i++ )
                 {
                     if( i == y ) { continue; } // don't updated the square that we are looking at
 
@@ -138,9 +138,9 @@ bool loop( Grid grid )
 
     unsigned int minSize = 10;
     unsigned int minX, minY = -1;
-    for( int x = 0; x < size; x++ )
+    for( int x = 0; x < gridSize; x++ )
     {
-        for( int y = 0; y < size; y++ )
+        for( int y = 0; y < gridSize; y++ )
         {
             // Find a square with the least options that isn't decided and make a choice for it
             if( grid[ x ][ y ].size() == 1 ) { continue; }
@@ -177,11 +177,11 @@ bool loop( Grid grid )
 
 void printGrid( const Grid& grid )
 {
-    for( int y = 0; y < size; y++ )
+    for( int y = 0; y < gridSize; y++ )
     {
         if( y % subsize == 0 )
         {
-            for( int x = 0; x < size; x++ )
+            for( int x = 0; x < gridSize; x++ )
             {
                 if( x % subsize == 0 )
                 {
@@ -191,7 +191,7 @@ void printGrid( const Grid& grid )
             }
             std::cout << std::endl;
         }
-        for( int x = 0; x < size; x++ )
+        for( int x = 0; x < gridSize; x++ )
         {
 
             if( x % subsize == 0 )
