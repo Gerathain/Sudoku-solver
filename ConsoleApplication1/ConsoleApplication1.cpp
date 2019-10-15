@@ -14,8 +14,12 @@ const int subsize = 3;
 
 int main()
 {
+    Grid grid( size );
     std::vector<std::set<int> > row( size, std::set<int> { 1, 2, 3, 4, 5, 6, 7, 8, 9 } );
-    Grid grid( size, row );
+    for( int i = 0; i < size; i++ )
+    {
+        grid[ i ] = std::vector<std::set<int> >( size, std::set<int> { 1, 2, 3, 4, 5, 6, 7, 8, 9 } );
+    }
 
     initGrid( grid );
 
@@ -42,7 +46,8 @@ bool concreteGrid( Grid &grid )
     for( int x = 0; x < size; x++ )
     {
         for( int y = 0; y < size; y++ )
-            //remove impossibilities
+        {
+            //remove impossibilities from the other squares
             if( grid[ x ][ y ].size == 1 )
             {
                 //This one has been decided, update the ones that it affects
@@ -65,12 +70,28 @@ bool concreteGrid( Grid &grid )
 
                     if( grid[ x ][ i ].size == 0 ) { return false; }
                 }
+
+                int xOffset = x / 3;
+                int yOffset = y / 3;
+
+                // Local grid
+                for( int localX = 0; localX < 3; localX++ )
+                {
+                    for( int localY = 0; localY < 3; localY++ )
+                    {
+                        if( x == (localX + 3 * xOffset) && y == (localY + 3 * yOffset) ) { continue; }
+
+                        grid[ localX + 3 * xOffset ][ localY + 3 * yOffset ].erase( grid[ x ][ y ].begin() );
+                        if( grid[ localX + 3 * xOffset ][ localY + 3 * yOffset ].size == 0 ) { return; }
+                    }
+                }
             }
+        }
     }
     return false;
 }
 
-void loop( Grid grid )
+void loop( Grid &grid )
 {
     bool impossible = concreteGrid( grid );
     if( impossible )
@@ -78,9 +99,28 @@ void loop( Grid grid )
         return;
     }
 
+    int minSize = 10;
+    int minX, minY;
+    for( int x = 0; x < size; x++ )
+    {
+        for( int y = 0; y < size; y++ )
+        {
+            // Find a square with the least options that isn't decided and make a choice for it
+            if( grid[ x ][ y ].size == 1 ) { continue; }
 
-    // Find a square with the least options that isn't decided
-    /* for i in square possiblities*/
-    // Make a choice for the square
+            if( grid[ x ][ y ].size < minSize )
+            {
+                minSize = grid[ x ][ y ].size;
+                minX = x;
+                minY = y;
+            }
+        }
+    }
+
+    for( int possibility : grid[ minX ][ minY ] )
+    {
+        grid[ minX ][ minY ] = std::set<int>{ possibility };
+    }
+
     loop( grid );
 }
