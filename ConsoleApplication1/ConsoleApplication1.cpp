@@ -101,7 +101,7 @@ bool concreteGrid( Grid &grid )
                 {
                     if( i == x ) { continue; } // don't updated the square that we are looking at
 
-                    grid[ i ][ y ].erase( grid[ x ][ y ].begin() );
+                    grid[ i ][ y ].erase( *(grid[ x ][ y ].begin()) );
 
                     if( grid[ i ][ y ].size() == 0 ) { return false; }
                 }
@@ -111,7 +111,7 @@ bool concreteGrid( Grid &grid )
                 {
                     if( i == y ) { continue; } // don't updated the square that we are looking at
 
-                    grid[ x ][ i ].erase( grid[ x ][ y ].begin() );
+                    grid[ x ][ i ].erase( *(grid[ x ][ y ].begin()) );
 
                     if( grid[ x ][ i ].size() == 0 ) { return false; }
                 }
@@ -126,7 +126,7 @@ bool concreteGrid( Grid &grid )
                     {
                         if( x == (localX + 3 * xOffset) && y == (localY + 3 * yOffset) ) { continue; }
 
-                        grid[ localX + 3 * xOffset ][ localY + 3 * yOffset ].erase( grid[ x ][ y ].begin() );
+                        grid[ localX + 3 * xOffset ][ localY + 3 * yOffset ].erase( *(grid[ x ][ y ].begin()) );
                         if( grid[ localX + 3 * xOffset ][ localY + 3 * yOffset ].size() == 0 ) { return false; }
                     }
                 }
@@ -147,8 +147,8 @@ bool loop( Grid &grid )
         return false;
     }
 
-    int minSize = 10;
-    int minX, minY = -1;
+    unsigned int minSize = 10;
+    unsigned int minX, minY = -1;
     for( int x = 0; x < size; x++ )
     {
         for( int y = 0; y < size; y++ )
@@ -181,4 +181,5 @@ bool loop( Grid &grid )
             return true;
         }
     }
+    return false;
 }
