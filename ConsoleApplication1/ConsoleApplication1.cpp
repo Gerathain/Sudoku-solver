@@ -16,6 +16,11 @@ void initGrid( Grid &grid );
 bool loop( Grid grid );
 void printGrid( const Grid &grid );
 
+bool operator< ( std::set<int> a, std::set<int> b )
+{
+    return a.size() < b.size();
+}
+
 int main()
 {
     Grid grid( gridSize );
