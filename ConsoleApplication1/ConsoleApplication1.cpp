@@ -19,7 +19,7 @@ void printGrid( const Grid &grid );
 int main()
 {
     Grid grid( size );
-    std::vector<std::set<int> > row( size, std::set<int> { 1, 2, 3, 4, 5, 6, 7, 8, 9 } );
+
     for( int i = 0; i < size; i++ )
     {
         grid[ i ] = std::vector<std::set<int> >( size, std::set<int> { 1, 2, 3, 4, 5, 6, 7, 8, 9 } );
@@ -105,18 +105,18 @@ bool concreteGrid( Grid &grid )
                     if( grid[ x ][ i ].size() == 0 ) { return false; }
                 }
 
-                int xOffset = x / 3;
-                int yOffset = y / 3;
+                int xOffset = x / subsize;
+                int yOffset = y / subsize;
 
                 // Local grid
-                for( int localX = 0; localX < 3; localX++ )
+                for( int localX = 0; localX < subsize; localX++ )
                 {
-                    for( int localY = 0; localY < 3; localY++ )
+                    for( int localY = 0; localY < subsize; localY++ )
                     {
-                        if( x == (localX + 3 * xOffset) && y == (localY + 3 * yOffset) ) { continue; }
+                        if( x == (localX + subsize * xOffset) && y == (localY + subsize * yOffset) ) { continue; }
 
-                        grid[ localX + 3 * xOffset ][ localY + 3 * yOffset ].erase( *(grid[ x ][ y ].begin()) );
-                        if( grid[ localX + 3 * xOffset ][ localY + 3 * yOffset ].size() == 0 ) { return false; }
+                        grid[ localX + subsize * xOffset ][ localY + subsize * yOffset ].erase( *(grid[ x ][ y ].begin()) );
+                        if( grid[ localX + subsize * xOffset ][ localY + subsize * yOffset ].size() == 0 ) { return false; }
                     }
                 }
             }
@@ -179,8 +179,26 @@ void printGrid( const Grid& grid )
 {
     for( int y = 0; y < size; y++ )
     {
+        if( y % subsize == 0 )
+        {
+            for( int x = 0; x < size; x++ )
+            {
+                if( x % subsize == 0 )
+                {
+                    std::cout << "+";
+                }
+                std::cout << "--";
+            }
+            std::cout << std::endl;
+        }
         for( int x = 0; x < size; x++ )
         {
+
+            if( x % subsize == 0 )
+            {
+                std::cout << "|";
+            }
+
             for( int choice : grid[ x ][ y ] )
             {
                 std::cout << choice << ' ';
