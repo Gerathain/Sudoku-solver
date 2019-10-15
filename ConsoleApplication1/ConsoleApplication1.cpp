@@ -12,7 +12,8 @@ typedef std::vector< std::vector< std::set<int> > > Grid;
 const int gridSize = 9;
 const int subsize = 3;
 
-void initGrid( Grid &grid );
+void initGrid( Grid& grid );
+void readGrid( Grid& grid );
 bool loop( Grid grid );
 void printGrid( const Grid &grid );
 
@@ -44,8 +45,11 @@ int main()
 * Takes the grid, adds the known values and then populates everything else with the
 * set of every number that is possible
 */
-void initGrid( Grid &grid )
+void initGrid( Grid& grid )
 {
+    // This should be changed to be much easier to edit. I think that it should
+    // be able to read the grig in from a csv in a file or something.
+
     // Assign sets of one value to the square s that the puzzle start with
     grid[ 0 ][ 0 ] = std::set<int>{ 5 };
     grid[ 1 ][ 0 ] = std::set<int>{ 3 };
@@ -77,6 +81,13 @@ void initGrid( Grid &grid )
     grid[ 4 ][ 8 ] = std::set<int>{ 8 };
     grid[ 7 ][ 8 ] = std::set<int>{ 7 };
     grid[ 8 ][ 8 ] = std::set<int>{ 9 };
+
+    return;
+}
+
+void readGrid( Grid& grid )
+{
+    ( void )grid;
 
     return;
 }
