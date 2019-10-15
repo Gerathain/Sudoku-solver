@@ -24,6 +24,18 @@ int main()
     initGrid( grid );
 
     loop( grid );
+
+    for( int x = 0; x < size; x++ )
+    {
+        for( int y = 0; y < size; y++ )
+        {
+            for( int choice : grid[ x ][ y ] )
+            {
+                std::cout << choice << ' ';
+            }
+            std::cout << std::endl;
+        }
+    }
 }
 
 /**
@@ -91,7 +103,7 @@ bool concreteGrid( Grid &grid )
     return false;
 }
 
-void loop( Grid &grid )
+bool loop( Grid &grid )
 {
     bool impossible = concreteGrid( grid );
     if( impossible )
@@ -100,7 +112,7 @@ void loop( Grid &grid )
     }
 
     int minSize = 10;
-    int minX, minY;
+    int minX, minY = -1;
     for( int x = 0; x < size; x++ )
     {
         for( int y = 0; y < size; y++ )
@@ -117,10 +129,20 @@ void loop( Grid &grid )
         }
     }
 
+    // all of the squares in the grid have a size of one are are allowed to by the rules of the game
+    if( minX == -1 )
+    {
+        return true;
+    }
+
     for( int possibility : grid[ minX ][ minY ] )
     {
         grid[ minX ][ minY ] = std::set<int>{ possibility };
-    }
 
-    loop( grid );
+        if( loop( grid ) )
+        {
+            // A solution was found
+            return true;
+        }
+    }
 }
