@@ -46,6 +46,36 @@ void initGrid( Grid grid )
 {
     // Assign sets of one value to the square s that the puzzle start with
     grid[ 0 ][ 0 ] = std::set<int>{ 5 };
+    grid[ 1 ][ 0 ] = std::set<int>{ 3 };
+    grid[ 4 ][ 0 ] = std::set<int>{ 7 };
+    grid[ 0 ][ 1 ] = std::set<int>{ 6 };
+    grid[ 3 ][ 1 ] = std::set<int>{ 1 };
+    grid[ 4 ][ 1 ] = std::set<int>{ 9 };
+    grid[ 5 ][ 1 ] = std::set<int>{ 5 };
+    grid[ 1 ][ 2 ] = std::set<int>{ 9 };
+    grid[ 2 ][ 2 ] = std::set<int>{ 8 };
+    grid[ 7 ][ 2 ] = std::set<int>{ 6 };
+    grid[ 0 ][ 3 ] = std::set<int>{ 8 };
+    grid[ 4 ][ 3 ] = std::set<int>{ 6 };
+    grid[ 8 ][ 3 ] = std::set<int>{ 3 };
+    grid[ 0 ][ 4 ] = std::set<int>{ 4 };
+    grid[ 3 ][ 4 ] = std::set<int>{ 8 };
+    grid[ 5 ][ 4 ] = std::set<int>{ 3 };
+    grid[ 8 ][ 4 ] = std::set<int>{ 1 };
+    grid[ 0 ][ 5 ] = std::set<int>{ 7 };
+    grid[ 4 ][ 5 ] = std::set<int>{ 2 };
+    grid[ 8 ][ 5 ] = std::set<int>{ 6 };
+    grid[ 1 ][ 6 ] = std::set<int>{ 6 };
+    grid[ 6 ][ 6 ] = std::set<int>{ 2 };
+    grid[ 7 ][ 6 ] = std::set<int>{ 8 };
+    grid[ 3 ][ 7 ] = std::set<int>{ 4 };
+    grid[ 4 ][ 7 ] = std::set<int>{ 1 };
+    grid[ 5 ][ 7 ] = std::set<int>{ 9 };
+    grid[ 8 ][ 7 ] = std::set<int>{ 5 };
+    grid[ 4 ][ 8 ] = std::set<int>{ 8 };
+    grid[ 7 ][ 8 ] = std::set<int>{ 7 };
+    grid[ 8 ][ 8 ] = std::set<int>{ 9 };
+
     return;
 }
 
