@@ -22,7 +22,12 @@ int main()
 
     for( int i = 0; i < gridSize; i++ )
     {
-        grid[ i ] = std::vector<std::set<int> >( gridSize, std::set<int> { 1, 2, 3, 4, 5, 6, 7, 8, 9 } );
+        std::set<int> s;
+        for( int j = 1; j <= gridSize; j++ )
+        {
+            s.insert( j );
+        }
+        grid[ i ] = std::vector<std::set<int> >( gridSize, s );
     }
 
     initGrid( grid );
