@@ -12,6 +12,9 @@ typedef std::vector< std::vector< std::set<int> > > Grid;
 const int size = 9;
 const int subsize = 3;
 
+void initGrid( Grid &grid );
+bool loop( Grid &grid );
+
 int main()
 {
     Grid grid( size );
@@ -42,7 +45,7 @@ int main()
 * Takes the grid, adds the known values and then populates everything else with the
 * set of every number that is possible
 */
-void initGrid( Grid grid )
+void initGrid( Grid &grid )
 {
     // Assign sets of one value to the square s that the puzzle start with
     grid[ 0 ][ 0 ] = std::set<int>{ 5 };
@@ -90,7 +93,7 @@ bool concreteGrid( Grid &grid )
         for( int y = 0; y < size; y++ )
         {
             //remove impossibilities from the other squares
-            if( grid[ x ][ y ].size == 1 )
+            if( grid[ x ][ y ].size() == 1 )
             {
                 //This one has been decided, update the ones that it affects
                 //row
@@ -100,7 +103,7 @@ bool concreteGrid( Grid &grid )
 
                     grid[ i ][ y ].erase( grid[ x ][ y ].begin() );
 
-                    if( grid[ i ][ y ].size == 0 ) { return false; }
+                    if( grid[ i ][ y ].size() == 0 ) { return false; }
                 }
 
                 //column
@@ -110,7 +113,7 @@ bool concreteGrid( Grid &grid )
 
                     grid[ x ][ i ].erase( grid[ x ][ y ].begin() );
 
-                    if( grid[ x ][ i ].size == 0 ) { return false; }
+                    if( grid[ x ][ i ].size() == 0 ) { return false; }
                 }
 
                 int xOffset = x / 3;
@@ -124,7 +127,7 @@ bool concreteGrid( Grid &grid )
                         if( x == (localX + 3 * xOffset) && y == (localY + 3 * yOffset) ) { continue; }
 
                         grid[ localX + 3 * xOffset ][ localY + 3 * yOffset ].erase( grid[ x ][ y ].begin() );
-                        if( grid[ localX + 3 * xOffset ][ localY + 3 * yOffset ].size == 0 ) { return; }
+                        if( grid[ localX + 3 * xOffset ][ localY + 3 * yOffset ].size() == 0 ) { return false; }
                     }
                 }
             }
@@ -132,13 +135,16 @@ bool concreteGrid( Grid &grid )
     }
     return false;
 }
-
+/**
+* Make the decisions if the grid is undecidable
+* return true if a solution has been found
+*/
 bool loop( Grid &grid )
 {
     bool impossible = concreteGrid( grid );
     if( impossible )
     {
-        return;
+        return false;
     }
 
     int minSize = 10;
@@ -148,11 +154,11 @@ bool loop( Grid &grid )
         for( int y = 0; y < size; y++ )
         {
             // Find a square with the least options that isn't decided and make a choice for it
-            if( grid[ x ][ y ].size == 1 ) { continue; }
+            if( grid[ x ][ y ].size() == 1 ) { continue; }
 
-            if( grid[ x ][ y ].size < minSize )
+            if( grid[ x ][ y ].size() < minSize )
             {
-                minSize = grid[ x ][ y ].size;
+                minSize = grid[ x ][ y ].size();
                 minX = x;
                 minY = y;
             }
