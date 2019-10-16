@@ -40,8 +40,8 @@ int main()
         grid[ i ] = std::vector<std::set<int> >( gridSize, s );
     }
 
-    initGrid( grid );
-    // readGrid( grid );
+    // initGrid( grid );
+    readGrid( grid );
 
     loop( grid );
 }
@@ -100,10 +100,10 @@ void readGrid( Grid& grid )
 
     int x = 0, y = 0, i = 0;
 
-    while( fin >> temp )
+    while( getline( fin, line ) )
     {
-        getline( fin, line );
         std::stringstream s( line );
+        x = 0;
 
         while( getline( s, word, ',' ) )
         {
@@ -125,6 +125,8 @@ void readGrid( Grid& grid )
         }
         y++;
     }
+
+    fin.close();
 
     return;
 }
