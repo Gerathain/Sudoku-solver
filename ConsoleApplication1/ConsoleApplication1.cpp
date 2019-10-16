@@ -13,8 +13,8 @@
 
 //2d array of sets
 typedef std::vector< std::vector< std::set<int> > > Grid;
-const int gridSize = 9;
-const int subsize = 3;
+const int gridSize = 16;
+const int subsize = 4;
 
 void initGrid( Grid& grid );
 void readGrid( Grid& grid );
@@ -94,11 +94,11 @@ void readGrid( Grid& grid )
 {
     std::fstream fin;
 
-    fin.open( "sudoku.csv", std::ios::in );
+    fin.open( "sudoku16.csv", std::ios::in );
 
     std::string line, word, temp;
 
-    int x = 0, y = 0, i = 0;
+    int x = 0, y = 0, i = 1;
 
     while( getline( fin, line ) )
     {
@@ -112,8 +112,8 @@ void readGrid( Grid& grid )
 
             if( square == 0 )
             {
-                i = 0;
-                std::generate_n( std::inserter( possibilities, possibilities.begin() ), gridSize, [&i]() { return i++; } );
+                i = 1;
+                std::generate_n( std::inserter( possibilities, possibilities.begin() ), gridSize + 1, [&i]() { return i++; } );
             }
             else
             {
@@ -196,7 +196,8 @@ bool loop( Grid grid )
         return false;
     }
 
-    unsigned int minSize = 10;
+    unsigned int minSize = INT_MAX;
+    ;
     unsigned int minX, minY = -1;
     for( int x = 0; x < gridSize; x++ )
     {
