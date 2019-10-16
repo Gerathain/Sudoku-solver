@@ -6,6 +6,10 @@
 #include <set>
 #include <vector>
 #include <iostream>
+#include <fstream>
+#include <sstream>
+#include <algorithm>
+#include <iterator>
 
 //2d array of sets
 typedef std::vector< std::vector< std::set<int> > > Grid;
@@ -37,6 +41,7 @@ int main()
     }
 
     initGrid( grid );
+    // readGrid( grid );
 
     loop( grid );
 }
@@ -87,7 +92,39 @@ void initGrid( Grid& grid )
 
 void readGrid( Grid& grid )
 {
-    ( void )grid;
+    std::fstream fin;
+
+    fin.open( "sudoku.csv", std::ios::in );
+
+    std::string line, word, temp;
+
+    int x = 0, y = 0, i = 0;
+
+    while( fin >> temp )
+    {
+        getline( fin, line );
+        std::stringstream s( line );
+
+        while( getline( s, word, ',' ) )
+        {
+            int square = stoi( word );
+            std::set<int> possibilities;
+
+            if( square == 0 )
+            {
+                i = 0;
+                std::generate_n( std::inserter( possibilities, possibilities.begin() ), gridSize, [&i]() { return i++; } );
+            }
+            else
+            {
+                possibilities = { square };
+            }
+
+            grid[ x ][ y ] = possibilities;
+            x++;
+        }
+        y++;
+    }
 
     return;
 }
