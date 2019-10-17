@@ -13,8 +13,8 @@
 
 //2d array of sets
 typedef std::vector< std::vector< std::set<int> > > Grid;
-const int gridSize = 16;
-const int subsize = 4;
+const int gridSize = 36;
+const int subsize = 6;
 
 void initGrid( Grid& grid );
 void readGrid( Grid& grid );
@@ -94,7 +94,7 @@ void readGrid( Grid& grid )
 {
     std::fstream fin;
 
-    fin.open( "sudoku16.csv", std::ios::in );
+    fin.open( "sudoku36.csv", std::ios::in );
 
     std::string line, word, temp;
 
@@ -144,13 +144,14 @@ bool concreteGrid( Grid &grid )
             //remove impossibilities from the other squares
             if( grid[ x ][ y ].size() == 1 )
             {
+                int gridValue = *(grid[ x ][ y ].begin());
                 //This one has been decided, update the ones that it affects
                 //row
                 for( int i = 0; i < gridSize; i++ )
                 {
                     if( i == x ) { continue; } // don't updated the square that we are looking at
 
-                    grid[ i ][ y ].erase( *(grid[ x ][ y ].begin()) );
+                    grid[ i ][ y ].erase( gridValue );
 
                     if( grid[ i ][ y ].size() == 0 ) { return false; }
                 }
@@ -160,7 +161,7 @@ bool concreteGrid( Grid &grid )
                 {
                     if( i == y ) { continue; } // don't updated the square that we are looking at
 
-                    grid[ x ][ i ].erase( *(grid[ x ][ y ].begin()) );
+                    grid[ x ][ i ].erase( gridValue );
 
                     if( grid[ x ][ i ].size() == 0 ) { return false; }
                 }
@@ -173,10 +174,12 @@ bool concreteGrid( Grid &grid )
                 {
                     for( int localY = 0; localY < subsize; localY++ )
                     {
-                        if( x == (localX + subsize * xOffset) && y == (localY + subsize * yOffset) ) { continue; }
+                        int adjustedX = (localX + subsize * xOffset);
+                        int adjustedY = (localY + subsize * yOffset);
+                        if( x == adjustedX && y == adjustedY ) { continue; }
 
-                        grid[ localX + subsize * xOffset ][ localY + subsize * yOffset ].erase( *(grid[ x ][ y ].begin()) );
-                        if( grid[ localX + subsize * xOffset ][ localY + subsize * yOffset ].size() == 0 ) { return false; }
+                        grid[ adjustedX ][ adjustedY ].erase( gridValue );
+                        if( grid[ adjustedX ][ adjustedY ].size() == 0 ) { return false; }
                     }
                 }
             }
@@ -204,11 +207,12 @@ bool loop( Grid grid )
         for( int y = 0; y < gridSize; y++ )
         {
             // Find a square with the least options that isn't decided and make a choice for it
-            if( grid[ x ][ y ].size() == 1 ) { continue; }
+            int numPossibilities = grid[ x ][ y ].size();
+            if( numPossibilities == 1 ) { continue; }
 
-            if( grid[ x ][ y ].size() < minSize )
+            if( numPossibilities < minSize )
             {
-                minSize = grid[ x ][ y ].size();
+                minSize = numPossibilities;
                 minX = x;
                 minY = y;
             }
